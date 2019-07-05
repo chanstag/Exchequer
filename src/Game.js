@@ -16,6 +16,8 @@ checkers cannot occupy the same space
 
 checkers must remain within the dimensions of the board
 
+need to implement uprgading of checkers
+
 **/
 
 class Game extends React.Component {
@@ -42,11 +44,16 @@ class Game extends React.Component {
                     if(this.state.player1){
                         let activeindex = this.isItemInArray(this.state.player1_checkers, this.state.activechecker);
                         // let moveindex = this.isItemInArray(moves[i].position, [rowid, colid]);
-                        this.state.player1_checkers.splice(activeindex, 1, moves[i].position);
+                        this.state.player1_checkers.splice(activeindex, 1, {position: moves[i].position, crowned:  this.state.player1_checkers[activeindex].crowned});
                         if(moves[i].action === "attack"){
                             let eliminatedopponent = moves[i].opponent;
                             let index = this.isItemInArray(this.state.player2_checkers, eliminatedopponent);
                             this.state.player2_checkers.splice(index, 1);
+                        }
+                        //need to check if checker has become crowned
+                        if(moves[i].position[0] == 0){
+                            //we need to crown the checker
+                            this.state.player1_checkers[activeindex].crowned = true;
                         }
                         this.setState({player1_checkers: this.state.player1_checkers, player2_checkers: this.state.player2_checkers, player1: false})
                         return true;
@@ -54,13 +61,17 @@ class Game extends React.Component {
                     else{
                         let activeindex = this.isItemInArray(this.state.player2_checkers, this.state.activechecker);
                         // let moveindex = this.isItemInArray(moves[i].position, [rowid, colid]);
-                        this.state.player2_checkers.splice(activeindex, 1, moves[i].position);
+                        this.state.player2_checkers.splice(activeindex, 1, {position: moves[i].position, crowned: this.state.player2_checkers[activeindex].crowned});
                         if(moves[i].action === "attack"){
                             let eliminatedopponent = moves[i].opponent;
                             let index = this.isItemInArray(this.state.player1_checkers, eliminatedopponent);
                             this.state.player1_checkers.splice(index, 1);
                         }
-                        this.setState({player2_checkers: this.state.player2_checkers,player2_checkers: this.state.player2_checkers, player1: true})
+                        //need to check if checker has become crowned
+                        if(moves[i].position[0]  == 7){
+                            this.state.player2_checkers[activeindex].crowned = true;
+                        }
+                        this.setState({player1_checkers: this.state.player1_checkers, player2_checkers: this.state.player2_checkers, player1: true})
                         return true;
                     }
                 }
@@ -172,7 +183,7 @@ class Game extends React.Component {
                             if(this.isItemInArray(this.state.player1_checkers, [this.state.activechecker[0] + 2, this.state.activechecker[1] + 2 ]) === -1){
                                 if(this.isItemInArray(this.state.player2_checkers, [this.state.activechecker[0] + 2, this.state.activechecker[1] + 2 ]) === -1){
                                     if( moves[i].position[0] !== this.state.activechecker[0] + 2 && moves[i].position[1] !== this.state.activechecker[1] + 2 ){
-                                        itemstopush.push({postion:[this.state.activechecker[0] + 2, this.state.activechecker[1] + 2], action: "attack", opponent: removed.position});
+                                        itemstopush.push({position:[this.state.activechecker[0] + 2, this.state.activechecker[1] + 2], action: "attack", opponent: removed.position});
                                     }
                                 }
                             }
@@ -197,9 +208,16 @@ class Game extends React.Component {
     isItemInArray(array, item) {
         for (var i = 0; i < array.length; i++) {
             // This if statement depends on the format of your array
-            if (array[i][0] == item[0] && array[i][1] == item[1]) {
+            //changing this to be compatible with code in determineAllowedMoves
+            if(array[i].position != "undefined"){
+                if(array[i].position[0] == item[0] && array[i].position[1] == item[1]){
+                    return i;
+                }
+            }
+            else if (array[i][0] == item[0] && array[i][1] == item[1]) {
                 return i;   // Found it
             }
+
         }
         return -1;   // Not found
     }
@@ -210,8 +228,8 @@ class Game extends React.Component {
         let startingpositions = []
         for(let i = 0 ; i < 2; i++){
             for(let j = 0; j < 8; j++){
-                player1.push([i+6,j]);
-                player2.push([i, j]);
+                player1.push({position: [i+6,j], crowned: false});
+                player2.push({position: [i, j], crowned: false});
             }
         }
         startingpositions.push(player1);

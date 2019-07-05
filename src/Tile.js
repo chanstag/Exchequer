@@ -1,14 +1,16 @@
 import React from 'react';
+import { throwStatement } from '@babel/types';
 
 
 class Tile extends React.Component{
+
     constructor(props){
       super(props);
       this.updateChecker = this.updateChecker;
       this.flashChecker = this.flashChecker;
       this.onSelection = this.onSelection;
       this.updateTile = this.updateTile;
-      this.state = {flashcolor: false};
+      this.state = {flashcolor: false, intervalFlash: {}};
     }          
 
     onSelection = ()=>{
@@ -25,6 +27,9 @@ class Tile extends React.Component{
       const canvas = this.refs[this.props.colid];
       const ctx = canvas.getContext("2d");
       const originalcolor = ctx.fillStyle;
+      if(this.intervalFlash !== "undefined"){
+        clearInterval(this.intervalFlash);
+      }
       this.intervalFlash = setInterval(()=>{this.flashChecker(ctx, originalcolor)}, 100);
       // alert(this.props.rowid, this.props.colid);
     }
@@ -55,6 +60,9 @@ class Tile extends React.Component{
             this.intervalFlash = setInterval(()=>{this.flashChecker(ctx, ctx.fillStyle)}, 100);
           }
           else{
+            if(typeof(this.intervalFlash) !== "undefined"){
+              clearInterval(this.intervalFlash);
+            }
             ctx.beginPath();
             ctx.arc(25, 25, 20, 0, 2*Math.PI);
             ctx.fillStyle = "#FF0000";
@@ -71,19 +79,30 @@ class Tile extends React.Component{
             this.intervalFlash = setInterval(()=>{this.flashChecker(ctx, ctx.fillStyle)}, 100)
           }
           else{
+            if(typeof(this.intervalFlash) !== "undefined"){
+              clearInterval(this.intervalFlash);
+            }
             ctx.beginPath();
             ctx.arc(25, 25, 20, 0, 2*Math.PI);
             ctx.fillStyle = "#008000";
-            ctx.fill()
+            ctx.fill();
+            
           }
         }
     }
 
     componentDidUpdate(prevprops){
+      if(this.props.activechecker[0] !== this.props.rowid || this.props.activechecker[1] !== this.props.colid){
+        this.updateTile();
+      }
       if(this.props.checkercolor !== prevprops.checkercolor){
         this.updateTile();
       }
       if(this.props.activechecker[0] === -1 && this.props.activechecker[0] === -1 && prevprops.activechecker[0] >= 0 && prevprops.activechecker[1] >= 0){
+        clearInterval(this.intervalFlash);
+        this.updateTile();
+      }
+      if(this.props.activechecker[0] ==! prevprops.activechecker[0] && this.props.activechecker[1] ==! prevprops.activechecker[1]){
         clearInterval(this.intervalFlash);
         this.updateTile();
       }

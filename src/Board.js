@@ -20,13 +20,13 @@ class Board extends React.Component{
             let redcheckers = [];
             let greencheckers = [];
             for(let coordinate of this.props.player1_checkers){
-                if (coordinate[0] == i){
-                    redcheckers.push(coordinate[1]);
+                if (coordinate.position[0] == i){
+                    redcheckers.push(coordinate.position[1]);
                 }
             }
             for(let coordinate of this.props.player2_checkers){
-                if (coordinate[0] == i){
-                    greencheckers.push(coordinate[1]);
+                if (coordinate.position[0] == i){
+                    greencheckers.push(coordinate.position[1]);
                 }
             }
             if(i % 2 == 1){
