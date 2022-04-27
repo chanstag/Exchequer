@@ -15,7 +15,13 @@ class Display extends React.Component{
 
     render(){
         
-        return(<h2>It is player {this.props.playerturn}'s turn</h2>)
+        return(
+        <div>
+            <h2>It is player {this.props.playerturn}'s turn</h2>
+            <p> Their score is {this.props.score}</p>
+        </div>
+        
+        );
     }
   
 }

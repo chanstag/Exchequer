@@ -26,7 +26,7 @@ class Game extends React.Component {
       this.checkerpositions = this.initBoard();
       console.log(this.checkerpositions[0]);
       console.log(this.checkerpositions[1]);
-      this.state = {player1: false, player1_checkers: this.checkerpositions[0], player2_checkers: this.checkerpositions[1], activechecker: [-1,-1]};
+      this.state = {player1: false, player1_checkers: this.checkerpositions[0], player2_checkers: this.checkerpositions[1], activechecker: [-1,-1], score: [0,0]};
     this.playerMove = this.playerMove.bind(this);
     this.removeActiveChecker = this.removeActiveChecker.bind(this);
     this.calculateMove = this.calculateMove.bind(this);
@@ -64,7 +64,7 @@ class Game extends React.Component {
         if(moves){
             for(var i = 0; i < moves.length; i++){
                 if(moves[i].position[0] === rowid && moves[i].position[1] === colid){
-                    if(this.state.player1){
+                    if(this.state.player1){ 
                         let activeindex = this.isItemInArray(this.state.player1_checkers, this.state.activechecker);
                         // let moveindex = this.isItemInArray(moves[i].position, [rowid, colid]);
                         this.state.player1_checkers.splice(activeindex, 1, {position: moves[i].position, crowned:  this.state.player1_checkers[activeindex].crowned});
@@ -72,6 +72,7 @@ class Game extends React.Component {
                             let eliminatedopponent = moves[i].opponent;
                             let index = this.isItemInArray(this.state.player2_checkers, eliminatedopponent);
                             this.state.player2_checkers.splice(index, 1);
+                            this.state.score[0]++;
                         }
                         //need to check if checker has become crowned
                         if(moves[i].position[0] == 0){
@@ -91,6 +92,7 @@ class Game extends React.Component {
                             let eliminatedopponent = moves[i].opponent;
                             let index = this.isItemInArray(this.state.player1_checkers, eliminatedopponent);
                             this.state.player1_checkers.splice(index, 1);
+                            this.state.score[1]++;
                         }
                         //need to check if checker has become crowned
                         if(moves[i].position[0]  === 7){
@@ -506,7 +508,7 @@ class Game extends React.Component {
     initBoard = ()=>{
         let player1=[];
         let player2=[];
-        let startingpositions = []
+        let startingpositions = [];
         for(let i = 0 ; i < 2; i++){
             for(let j = 0; j < 8; j++){
                 player1.push({position: [i+6,j], crowned: false});
@@ -543,7 +545,7 @@ class Game extends React.Component {
                 <div>
                 <Board player1_checkers={this.state.player1_checkers} calculateMove={this.calculateMove} destroyactivechecker={this.removeActiveChecker} activechecker={this.state.activechecker} player2_checkers={this.state.player2_checkers} player1={this.state.player1} playermove={this.playerMove}/>
                 
-                <Display playerturn={1}/>
+                <Display playerturn={1} score={this.state.score[0]}/>
                  </div>
                 );
          }
@@ -552,7 +554,7 @@ class Game extends React.Component {
                 <div>
                 <Board player1_checkers={this.state.player1_checkers}  calculateMove={this.calculateMove} destroyactivechecker={this.removeActiveChecker} activechecker={this.state.activechecker} player2_checkers={this.state.player2_checkers} player1={this.state.player1} playermove={this.playerMove}/>
                 
-                <Display playerturn={2} activechecker={this.state.activechecker}/>
+                <Display playerturn={2} score={this.state.score[1]} activechecker={this.state.activechecker}/>
                  </div>
                 );
          }

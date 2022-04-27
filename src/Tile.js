@@ -20,7 +20,6 @@ class Tile extends React.Component{
         clearInterval(this.intervalFlash);
         this.updateTile();
       }
-      // alert(this.props.rowid + " " + this.props.colid);
     }
 
     updateChecker = ()=>{
@@ -31,7 +30,6 @@ class Tile extends React.Component{
         clearInterval(this.intervalFlash);
       }
       this.intervalFlash = setInterval(()=>{this.flashChecker(ctx, originalcolor)}, 100);
-      // alert(this.props.rowid, this.props.colid);
     }
 
     updateTile = ()=>{
