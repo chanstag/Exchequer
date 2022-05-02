@@ -27,9 +27,10 @@ class Game extends React.Component {
       console.log(this.checkerpositions[0]);
       console.log(this.checkerpositions[1]);
       this.state = {player1: false, player1_checkers: this.checkerpositions[0], player2_checkers: this.checkerpositions[1], activechecker: [-1,-1], score: [0,0]};
-    this.playerMove = this.playerMove.bind(this);
-    this.removeActiveChecker = this.removeActiveChecker.bind(this);
-    this.calculateMove = this.calculateMove.bind(this);
+      this.playerMove = this.playerMove.bind(this);
+      this.removeActiveChecker = this.removeActiveChecker.bind(this);
+      this.calculateMove = this.calculateMove.bind(this);
+      this.restartGame = this.restartGame.bind(this);//remember to bind(this), callback loses it's "this" an inherits "this" of caller (ref: https://stackoverflow.com/questions/39084677/react-react-how-to-access-the-correct-this-after-a-callback)
     }
 
     calculateMove(rowid, colid){
@@ -505,7 +506,7 @@ class Game extends React.Component {
         return -1;   // Not found
     }
 
-    initBoard = ()=>{
+    initBoard(){
         let player1=[];
         let player2=[];
         let startingpositions = [];
@@ -528,6 +529,11 @@ class Game extends React.Component {
           }), fnc);
     }
 
+    restartGame(){
+        this.checkerpositions = this.initBoard();
+        this.setState({player1: false, player1_checkers: this.checkerpositions[0], player2_checkers: this.checkerpositions[1], activechecker: [-1,-1], score: [0,0]});
+    }
+
     removeActiveChecker = ()=>{
         this.setState({activechecker: [-1, -1]});
     }
@@ -544,8 +550,7 @@ class Game extends React.Component {
             return(
                 <div>
                 <Board player1_checkers={this.state.player1_checkers} calculateMove={this.calculateMove} destroyactivechecker={this.removeActiveChecker} activechecker={this.state.activechecker} player2_checkers={this.state.player2_checkers} player1={this.state.player1} playermove={this.playerMove}/>
-                
-                <Display playerturn={1} score={this.state.score[0]}/>
+                <Display playerturn={1} restartGame={this.restartGame} score={this.state.score[0]}/>
                  </div>
                 );
          }
@@ -553,12 +558,10 @@ class Game extends React.Component {
             return(
                 <div>
                 <Board player1_checkers={this.state.player1_checkers}  calculateMove={this.calculateMove} destroyactivechecker={this.removeActiveChecker} activechecker={this.state.activechecker} player2_checkers={this.state.player2_checkers} player1={this.state.player1} playermove={this.playerMove}/>
-                
-                <Display playerturn={2} score={this.state.score[1]} activechecker={this.state.activechecker}/>
+                <Display playerturn={2} score={this.state.score[1]} restartGame={this.restartGame} activechecker={this.state.activechecker}/>
                  </div>
                 );
          }
-       
      }
   }
 

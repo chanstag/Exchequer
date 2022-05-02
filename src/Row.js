@@ -18,7 +18,7 @@ class Row extends React.Component {
           if(this.props.redcheckers.includes(i)){
                 if(this.props.color == true){
                     if(i%2 == 1){
-                        tiles.push(<Tile fill={true} rowid={this.props.rowid} calculateMove={this.props.calculateMove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker}  playermove={this.props.playermove} player1={this.props.player1}  colid={i} checkercolor="red"/>)
+                        tiles.push(<Tile fill={true} rowid={this.props.rowid} calculateMove={this.props.calculateMove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker}  playermove={this.props.playermove} player1={this.props.player1} checkercolor="red" colid={i}/>)
                     }
                     else{
                         tiles.push(<Tile fill={false} rowid={this.props.rowid} calculateMove={this.props.calculateMove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker}  playermove={this.props.playermove} player1={this.props.player1} checkercolor="red" colid={i}/>)
@@ -37,7 +37,7 @@ class Row extends React.Component {
           else if(this.props.greencheckers.includes(i)){
             if(this.props.color == true){
                 if(i%2 == 1){
-                    tiles.push(<Tile fill={true}  rowid={this.props.rowid} calculateMove={this.props.calculateMove} playermove={this.props.playermove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker} player1={this.props.player1} colid={i} checkercolor="green"/>)
+                    tiles.push(<Tile fill={true}  rowid={this.props.rowid} calculateMove={this.props.calculateMove} playermove={this.props.playermove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker} player1={this.props.player1} checkercolor="green"  colid={i}/>)
                   }
                   else{
                     tiles.push(<Tile fill={false} rowid={this.props.rowid} calculateMove={this.props.calculateMove} playermove={this.props.playermove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker} player1={this.props.player1} checkercolor="green" colid={i}/>)
@@ -56,7 +56,7 @@ class Row extends React.Component {
           else{
             if(this.props.color == true){
                 if(i%2 == 1){
-                    tiles.push(<Tile fill={true} rowid={this.props.rowid} calculateMove={this.props.calculateMove} playermove={this.props.playermove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker} player1={this.props.player1} colid={i} checkercolor={null}/>)
+                    tiles.push(<Tile fill={true} rowid={this.props.rowid} calculateMove={this.props.calculateMove} playermove={this.props.playermove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker} player1={this.props.player1} checkercolor={null} colid={i}/>)
                   }
                   else{
                     tiles.push(<Tile fill={false} rowid={this.props.rowid} calculateMove={this.props.calculateMove} playermove={this.props.playermove} activechecker={this.props.activechecker} destroyactivechecker={this.props.destroyactivechecker} player1={this.props.player1} checkercolor={null} colid={i}/>)
